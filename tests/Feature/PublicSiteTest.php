@@ -123,6 +123,24 @@ class PublicSiteTest extends TestCase
             ->assertDontSee('A detailed case study for this project is being prepared.');
     }
 
+    public function test_hero_ships_a_static_fallback_for_the_3d_visual(): void
+    {
+        $this->get('/')
+            ->assertSee('data-hero-visual', false)
+            ->assertSee('hero-fallback', false);
+    }
+
+    public function test_large_project_preview_only_appears_with_a_real_image(): void
+    {
+        $this->get('/projects/nilelingua')->assertDontSee('size="hero"', false)->assertDontSee('aspect-[16/7]', false);
+
+        Storage::fake('public');
+        $path = UploadedFile::fake()->image('cover.png', 1200, 750)->store('projects', 'public');
+        Project::where('slug', 'nilelingua')->update(['thumbnail' => $path, 'thumbnail_alt' => 'NileLingua home page']);
+
+        $this->get('/projects/nilelingua')->assertSee('aspect-[16/7]', false)->assertSee('alt="NileLingua home page"', false);
+    }
+
     public function test_unknown_project_returns_404_page(): void
     {
         $this->get('/projects/does-not-exist')->assertNotFound()->assertSee('This page could not be found.');
@@ -149,7 +167,19 @@ class PublicSiteTest extends TestCase
             ->assertSee('Selected Projects')
             ->assertSee('Education')
             ->assertSee('Download CV as PDF')
-            ->assertDontSee('Certifications');
+            ->assertSee('Certifications');
+    }
+
+    public function test_certifications_are_listed_on_the_site_and_cv(): void
+    {
+        foreach (['/', '/resume'] as $url) {
+            $this->get($url)
+                ->assertSee('Monitoring, Evaluation, and Learning for Development Professionals (MEAL DPro)')
+                ->assertSee('What is Project Management?')
+                ->assertSee('Teaching English as a Foreign Language (TEFL), 120 Hours, with Distinction')
+                ->assertSee('TR2397942172')
+                ->assertSee('Humentum');
+        }
     }
 
     public function test_resume_downloads_as_generated_pdf(): void

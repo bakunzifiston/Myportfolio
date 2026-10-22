@@ -80,7 +80,7 @@
     }
 
     .section {
-        @apply py-20 sm:py-28;
+        @apply py-24 sm:py-32;
     }
 
     .eyebrow {
@@ -93,7 +93,7 @@
     }
 
     .section-title {
-        @apply mt-4 text-3xl font-semibold tracking-tight sm:text-4xl;
+        @apply mt-4 text-3xl font-semibold tracking-[-0.025em] sm:text-[2.6rem] sm:leading-[1.1];
     }
 
     .section-lead {
@@ -121,11 +121,11 @@
     }
 
     .card {
-        @apply rounded-2xl border border-zinc-200/80 bg-white dark:border-zinc-800 dark:bg-zinc-900/60;
+        @apply rounded-2xl border border-zinc-200/80 bg-white dark:border-zinc-800/80 dark:bg-zinc-900/50;
     }
 
     .tag {
-        @apply inline-flex items-center rounded-md border border-zinc-200 bg-zinc-50 px-2 py-0.5 text-xs font-medium text-zinc-700 dark:border-zinc-700/70 dark:bg-zinc-800/60 dark:text-zinc-300;
+        @apply inline-flex items-center rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-800/70 dark:text-zinc-300;
     }
 
     .badge {
@@ -167,22 +167,55 @@
         @apply mt-4;
     }
 
-    /* Generated cover used when a project has no uploaded thumbnail. */
-    .project-cover {
-        background-color: hsl(var(--hue) 40% 96%);
-        background-image:
-            linear-gradient(hsl(var(--hue) 30% 50% / 0.09) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(var(--hue) 30% 50% / 0.09) 1px, transparent 1px);
-        background-size: 24px 24px;
-        color: hsl(var(--hue) 45% 30%);
+    /* Project preview: a browser frame resting in a soft stage (see components/site/project-cover). */
+    .preview-stage {
+        background:
+            radial-gradient(120% 90% at 85% 0%, hsl(var(--hue) 45% 50% / 0.10), transparent 60%),
+            var(--color-zinc-100);
     }
 
-    .dark .project-cover {
-        background-color: hsl(var(--hue) 20% 13%);
-        background-image:
-            linear-gradient(hsl(var(--hue) 40% 70% / 0.07) 1px, transparent 1px),
-            linear-gradient(90deg, hsl(var(--hue) 40% 70% / 0.07) 1px, transparent 1px);
-        color: hsl(var(--hue) 50% 78%);
+    .dark .preview-stage {
+        background:
+            radial-gradient(120% 90% at 85% 0%, hsl(var(--hue) 45% 55% / 0.12), transparent 60%),
+            var(--color-zinc-900);
+    }
+
+    .preview-frame {
+        @apply border-zinc-200 bg-white shadow-[0_18px_40px_-20px_rgb(0_0_0/0.25)] dark:border-zinc-700/70 dark:bg-zinc-950 dark:shadow-[0_18px_40px_-20px_rgb(0_0_0/0.9)];
+    }
+
+    .group:hover .preview-frame {
+        transform: translateY(-6px);
+    }
+
+    .preview-bar {
+        @apply border-zinc-200/80 bg-zinc-50 text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400;
+    }
+
+    .preview-url {
+        @apply bg-zinc-200/60 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400;
+    }
+
+    .preview-mark {
+        background: hsl(var(--hue) 45% 94%);
+        color: hsl(var(--hue) 45% 28%);
+    }
+
+    .dark .preview-mark {
+        background: hsl(var(--hue) 30% 16%);
+        color: hsl(var(--hue) 55% 78%);
+    }
+
+    .preview-title {
+        @apply text-zinc-900 dark:text-zinc-100;
+    }
+
+    .preview-muted {
+        @apply text-zinc-500 dark:text-zinc-500;
+    }
+
+    .preview-block {
+        @apply bg-zinc-100 dark:bg-zinc-900;
     }
 
     .bg-grid {
@@ -199,16 +232,51 @@
     }
 }
 
-/* Animated data flow along the hero architecture diagram. */
-.flow-line {
-    stroke-dasharray: 4 6;
-    animation: flow 1.6s linear infinite;
+/* Hero visual: static SVG first, cross-faded to the WebGL canvas once it has rendered. */
+.hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    /* Sequential cross-fade: the static diagram leaves before the 3D one arrives, so they never overlap. */
+    transition: opacity 0.7s ease 0.3s;
 }
 
-@keyframes flow {
-    to {
-        stroke-dashoffset: -20;
-    }
+.hero-fallback {
+    transition: opacity 0.3s ease;
+}
+
+.is-3d-ready .hero-canvas {
+    opacity: 1;
+}
+
+.is-3d-ready .hero-fallback {
+    opacity: 0;
+}
+
+/* Bento tiles: a faint project-tinted glow, plus a soft light that follows the cursor (set by app.js). */
+.tile-glow {
+    background: radial-gradient(90% 70% at 100% 0%, hsl(var(--hue) 50% 50% / 0.07), transparent 60%);
+}
+
+.tile-glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), hsl(var(--hue) 60% 55% / 0.10), transparent 65%);
+}
+
+.tile:hover .tile-glow::after {
+    opacity: 1;
+}
+
+/* Pointer tilt on project previews (enabled by app.js on fine pointers only). */
+[data-tilt] .preview-frame {
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .reveal {
@@ -227,8 +295,10 @@
         scroll-behavior: auto;
     }
 
-    .flow-line {
-        animation: none;
+    .preview-frame,
+    .group:hover .preview-frame {
+        transform: none !important;
+        transition: none;
     }
 
     .reveal {

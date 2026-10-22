@@ -1,4 +1,4 @@
-<section class="border-t border-zinc-200/80 dark:border-zinc-800" aria-labelledby="resume-cta-heading">
+<section aria-labelledby="resume-cta-heading">
     <div class="container-page py-16">
         <div class="reveal relative overflow-hidden rounded-3xl bg-zinc-950 px-6 py-12 sm:px-12 dark:bg-zinc-900 dark:ring-1 dark:ring-zinc-800">
             <div class="bg-grid pointer-events-none absolute inset-0 opacity-60 [mask-image:linear-gradient(to_left,black,transparent)] dark:opacity-100" aria-hidden="true" style="background-image: linear-gradient(to right, rgb(255 255 255 / .06) 1px, transparent 1px), linear-gradient(to bottom, rgb(255 255 255 / .06) 1px, transparent 1px);"></div>

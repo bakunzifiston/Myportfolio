@@ -1,4 +1,4 @@
-<section id="contact" class="section border-t border-zinc-200/80 bg-zinc-50/70 dark:border-zinc-800 dark:bg-zinc-900/30" aria-labelledby="contact-heading">
+<section id="contact" class="section bg-zinc-50/70 dark:bg-zinc-900/25" aria-labelledby="contact-heading">
     <div class="container-page grid gap-12 lg:grid-cols-[1fr_1.3fr] lg:gap-16">
         <div>
             <x-site.section-heading eyebrow="Contact" title="Let's build something useful together." id="contact-heading">

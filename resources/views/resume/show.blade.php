@@ -129,7 +129,7 @@
                     <h3 id="cv-certifications" class="{{ $sectionTitle }}">Certifications</h3>
                     <ul class="space-y-2 text-sm">
                         @foreach ($certifications as $cert)
-                            <li><span class="font-semibold text-zinc-900 dark:text-zinc-100 print:text-black">{{ $cert->name }}</span>{{ $cert->issuer ? ' — '.$cert->issuer : '' }}{{ $cert->issued_on ? ', '.$cert->issued_on->format('M Y') : '' }}</li>
+                            <li><span class="font-semibold text-zinc-900 dark:text-zinc-100 print:text-black">{{ $cert->name }}</span>{{ $cert->issuer ? ' — '.$cert->issuer : '' }}{{ $cert->issued_on ? ', '.$cert->issued_on->format('M Y') : '' }}@if ($cert->credential_id)<span class="text-zinc-500"> · Certificate no. {{ $cert->credential_id }}</span>@endif</li>
                         @endforeach
                     </ul>
                 </section>

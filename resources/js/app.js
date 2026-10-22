@@ -162,3 +162,63 @@ document.querySelectorAll('form[data-confirm]').forEach((form) => {
         if (!window.confirm(form.dataset.confirm)) event.preventDefault();
     });
 });
+
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* Hero 3D: loaded on demand, only where it's displayed and WebGL works; the SVG fallback stays otherwise. */
+const heroVisual = document.querySelector('[data-hero-visual]');
+
+function supportsWebGL() {
+    try {
+        const canvas = document.createElement('canvas');
+        return !!(window.WebGLRenderingContext && (canvas.getContext('webgl2') || canvas.getContext('webgl')));
+    } catch {
+        return false;
+    }
+}
+
+if (heroVisual && heroVisual.offsetParent !== null && !navigator.connection?.saveData && supportsWebGL()) {
+    const mount = () =>
+        import('./hero-scene.js')
+            .then(({ mountHeroScene }) => mountHeroScene(heroVisual, { animate: !prefersReducedMotion }))
+            .catch(() => {
+                /* keep the static fallback */
+            });
+    // Let the page finish its critical work first.
+    if ('requestIdleCallback' in window) requestIdleCallback(mount, { timeout: 1200 });
+    else setTimeout(mount, 300);
+}
+
+/* Subtle 3D tilt on project previews for mouse/trackpad users. */
+if (!prefersReducedMotion && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('[data-tilt]').forEach((card) => {
+        const target = card.querySelector('[data-tilt-target]');
+        if (!target) return;
+        let frame = null;
+
+        card.addEventListener('pointermove', (event) => {
+            const rect = card.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5;
+            const y = (event.clientY - rect.top) / rect.height - 0.5;
+            cancelAnimationFrame(frame);
+            frame = requestAnimationFrame(() => {
+                target.style.transform = `perspective(900px) translateY(-6px) rotateX(${(-y * 5).toFixed(2)}deg) rotateY(${(x * 6).toFixed(2)}deg)`;
+            });
+        });
+        card.addEventListener('pointerleave', () => {
+            cancelAnimationFrame(frame);
+            target.style.transform = '';
+        });
+    });
+}
+
+/* Cursor-following light on bento project tiles (purely visual; skipped for touch). */
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('[data-spotlight]').forEach((tile) => {
+        tile.addEventListener('pointermove', (event) => {
+            const rect = tile.getBoundingClientRect();
+            tile.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+            tile.style.setProperty('--my', `${event.clientY - rect.top}px`);
+        });
+    });
+}

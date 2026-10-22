@@ -3,7 +3,7 @@
     $paragraphs = \App\Support\Settings::paragraphs('about');
     $portrait = \App\Support\Settings::fileUrl('portrait');
 @endphp
-<section id="about" class="section border-t border-zinc-200/80 dark:border-zinc-800" aria-labelledby="about-heading">
+<section id="about" class="section" aria-labelledby="about-heading">
     <div class="container-page grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
         <div>
             <x-site.section-heading eyebrow="About" title="Practical software, built on solid foundations." id="about-heading" />

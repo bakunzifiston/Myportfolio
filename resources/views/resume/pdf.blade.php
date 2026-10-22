@@ -25,28 +25,28 @@
         @font-face { font-family: 'Inter Medium'; font-weight: normal; src: url('{{ $fonts }}/Inter-Medium.ttf') format('truetype'); }
         @font-face { font-family: 'Inter SemiBold'; font-weight: normal; src: url('{{ $fonts }}/Inter-SemiBold.ttf') format('truetype'); }
 
-        @page { margin: 16mm 18mm 14mm; }
+        @page { margin: 13mm 17mm 11mm; }
         * { box-sizing: border-box; }
-        body { font-family: 'Inter', 'DejaVu Sans', sans-serif; font-size: 9pt; line-height: 1.42; color: #4b5563; margin: 0; }
+        body { font-family: 'Inter', 'DejaVu Sans', sans-serif; font-size: 8.9pt; line-height: 1.36; color: #4b5563; margin: 0; }
         p { margin: 0; }
         table { width: 100%; border-collapse: collapse; }
         td { padding: 0; vertical-align: top; }
 
-        .name { font-weight: bold; font-size: 24pt; line-height: 1.05; color: #111827; letter-spacing: -0.5pt; }
+        .name { font-weight: bold; font-size: 23pt; line-height: 1.05; color: #111827; letter-spacing: -0.5pt; }
         .role { font-size: 10pt; color: #6b7280; margin-top: 6pt; }
         .contact { font-size: 8.5pt; color: #6b7280; margin-top: 4pt; }
         .contact .sep { color: #d1d5db; padding: 0 5pt; }
 
-        .section { margin-top: 10pt; padding-top: 8pt; border-top: 0.5pt solid #e5e7eb; }
+        .section { margin-top: 8.5pt; padding-top: 7pt; border-top: 0.5pt solid #e5e7eb; }
         .label { width: 20%; padding-right: 12pt; }
         .label p { font-family: 'Inter SemiBold', sans-serif; font-size: 7.5pt; letter-spacing: 1.3pt; text-transform: uppercase; color: #0f766e; padding-top: 1.5pt; }
 
         .title { font-family: 'Inter SemiBold', sans-serif; color: #111827; }
         .soft { color: #9ca3af; }
-        .item { margin-bottom: 5pt; }
+        .item { margin-bottom: 4.5pt; }
         .skills td { padding-bottom: 3pt; }
         .skills tr:last-child td { padding-bottom: 0; }
-        .skill-name { width: 31%; padding-right: 10pt; }
+        .skill-name { width: 30.5%; padding-right: 10pt; }
         .last { margin-bottom: 0; }
         ul { margin: 2pt 0 0; padding-left: 10pt; }
         li { margin-bottom: 1pt; }
@@ -112,9 +112,7 @@
             <td>
                 @foreach ($projects as $project)
                     <div @class(['item' => ! $loop->last || $otherProjects->isNotEmpty(), 'last' => $loop->last && $otherProjects->isEmpty()])>
-                        <p><span class="title">{{ $project->title }}</span>@if ($project->category)<span class="soft"> &nbsp;{{ $project->category->name }}</span>@endif</p>
-                        @if ($project->role)<p class="soft">{{ $project->role }}</p>@endif
-                        <p>{{ $project->short_description }}</p>
+                        <p><span class="title">{{ $project->title }}</span>@if ($project->role)<span class="soft"> ({{ $project->role }})</span>@endif — {{ $project->short_description }}</p>
                         @if (filled($project->technologies))<p class="soft">{{ implode(', ', $project->technologies) }}</p>@endif
                     </div>
                 @endforeach
@@ -152,8 +150,8 @@
             <td>
                 @foreach ($certifications as $cert)
                     <p @class(['item' => ! $loop->last, 'last' => $loop->last])>
-                        <span class="title">{{ $cert->name }}</span>@if ($cert->issuer), {{ $cert->issuer }}@endif
-                        @if ($cert->issued_on)<span class="soft"> &nbsp;{{ $cert->issued_on->format('M Y') }}</span>@endif
+                        <span class="title">{{ $cert->name }}</span><br>
+                        {{ $cert->issuer }}@if ($cert->issued_on || $cert->credential_id)<span class="soft"> &nbsp;{{ collect([$cert->issued_on?->format('M Y'), $cert->credential_id ? 'No. '.$cert->credential_id : null])->filter()->implode(' · ') }}</span>@endif
                     </p>
                 @endforeach
             </td>

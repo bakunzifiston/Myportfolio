@@ -1,4 +1,4 @@
-<section id="education" class="section border-t border-zinc-200/80 dark:border-zinc-800" aria-labelledby="education-heading">
+<section id="education" class="section" aria-labelledby="education-heading">
     <div class="container-page grid gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
         <x-site.section-heading eyebrow="Education" title="Academic background" id="education-heading">
             Studies in Computer Science and Software Engineering, pursued in China and the Turkish Republic of Northern Cyprus, together with master's-level studies.
@@ -43,11 +43,14 @@
 
             @if ($certifications->isNotEmpty())
                 <h3 class="mt-12 flex items-center gap-2 text-sm font-semibold tracking-wide text-zinc-500 uppercase dark:text-zinc-400"><i data-lucide="award"></i> Certifications</h3>
-                <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+                <ul class="mt-4 grid gap-3">
                     @foreach ($certifications as $cert)
                         <li class="reveal card p-5">
                             <p class="font-medium text-zinc-950 dark:text-white">{{ $cert->name }}</p>
                             <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{{ collect([$cert->issuer, $cert->issued_on?->format('M Y')])->filter()->implode(' · ') }}</p>
+                            @if ($cert->credential_id)
+                                <p class="mt-1 font-mono text-xs text-zinc-500 dark:text-zinc-500">Certificate no. {{ $cert->credential_id }}</p>
+                            @endif
                             @if ($cert->credential_url)
                                 <a href="{{ $cert->credential_url }}" class="link-arrow mt-2" target="_blank" rel="noopener noreferrer">View credential <i data-lucide="external-link" class="size-3.5"></i></a>
                             @endif

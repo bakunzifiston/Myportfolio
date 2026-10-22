@@ -57,7 +57,7 @@ return [
             'hero_text' => [
                 'label' => 'Hero supporting text',
                 'type' => 'textarea',
-                'default' => "A software developer and technology enthusiast passionate about building digital products, designing reliable systems, and helping organizations transform ideas into practical technology solutions.",
+                'default' => 'A software developer and technology enthusiast passionate about building digital products, designing reliable systems, and helping organizations transform ideas into practical technology solutions.',
             ],
         ],
 

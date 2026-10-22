@@ -38,11 +38,14 @@
         </header>
 
         <div class="container-page py-12 sm:py-16">
-            <div class="card aspect-[16/7] overflow-hidden">
-                <x-site.project-cover :project="$project" size="hero" />
-            </div>
+            {{-- The large preview is reserved for real imagery; a generated mock-up adds nothing at this size. --}}
+            @if ($project->thumbnailUrl())
+                <div class="card mb-12 aspect-[16/7] overflow-hidden">
+                    <x-site.project-cover :project="$project" size="hero" />
+                </div>
+            @endif
 
-            <div class="mt-12 grid gap-12 lg:grid-cols-[1fr_300px] lg:gap-16">
+            <div class="grid gap-12 lg:grid-cols-[1fr_300px] lg:gap-16">
                 <div class="min-w-0 space-y-12">
                     @unless ($project->hasCaseStudy())
                         <div class="flex gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-5 text-sm text-zinc-700 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300">
