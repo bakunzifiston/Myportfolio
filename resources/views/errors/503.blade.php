@@ -1,0 +1,5 @@
+@extends('errors.minimal')
+@section('title', 'Down for maintenance')
+@section('code', '503')
+@section('message', 'Down for maintenance')
+@section('detail', 'The site is being updated and will be back shortly.')

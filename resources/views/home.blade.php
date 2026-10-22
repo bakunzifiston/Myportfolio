@@ -1,0 +1,10 @@
+<x-layouts.site>
+    @include('partials.home.hero')
+    @include('partials.home.about')
+    @include('partials.home.projects')
+    @include('partials.home.skills')
+    @include('partials.home.experience')
+    @include('partials.home.education')
+    @include('partials.home.resume')
+    @include('partials.home.contact')
+</x-layouts.site>

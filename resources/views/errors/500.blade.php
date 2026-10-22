@@ -1,0 +1,5 @@
+@extends('errors.minimal')
+@section('title', 'Something went wrong')
+@section('code', '500')
+@section('message', 'Something went wrong')
+@section('detail', 'An unexpected error occurred. Please try again shortly.')
