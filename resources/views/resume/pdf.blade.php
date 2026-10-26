@@ -25,9 +25,9 @@
         @font-face { font-family: 'Inter Medium'; font-weight: normal; src: url('{{ $fonts }}/Inter-Medium.ttf') format('truetype'); }
         @font-face { font-family: 'Inter SemiBold'; font-weight: normal; src: url('{{ $fonts }}/Inter-SemiBold.ttf') format('truetype'); }
 
-        @page { margin: 13mm 17mm 11mm; }
+        @page { margin: 12mm 16mm 10mm; }
         * { box-sizing: border-box; }
-        body { font-family: 'Inter', 'DejaVu Sans', sans-serif; font-size: 8.9pt; line-height: 1.36; color: #4b5563; margin: 0; }
+        body { font-family: 'Inter', 'DejaVu Sans', sans-serif; font-size: 8.9pt; line-height: 1.31; color: #4b5563; margin: 0; }
         p { margin: 0; }
         table { width: 100%; border-collapse: collapse; }
         td { padding: 0; vertical-align: top; }
@@ -37,7 +37,7 @@
         .contact { font-size: 8.5pt; color: #6b7280; margin-top: 4pt; }
         .contact .sep { color: #d1d5db; padding: 0 5pt; }
 
-        .section { margin-top: 8.5pt; padding-top: 7pt; border-top: 0.5pt solid #e5e7eb; }
+        .section { margin-top: 7.5pt; padding-top: 6.5pt; border-top: 0.5pt solid #e5e7eb; }
         .label { width: 20%; padding-right: 12pt; }
         .label p { font-family: 'Inter SemiBold', sans-serif; font-size: 7.5pt; letter-spacing: 1.3pt; text-transform: uppercase; color: #0f766e; padding-top: 1.5pt; }
 
@@ -150,8 +150,9 @@
             <td>
                 @foreach ($certifications as $cert)
                     <p @class(['item' => ! $loop->last, 'last' => $loop->last])>
-                        <span class="title">{{ $cert->name }}</span><br>
-                        {{ $cert->issuer }}@if ($cert->issued_on || $cert->credential_id)<span class="soft"> &nbsp;{{ collect([$cert->issued_on?->format('M Y'), $cert->credential_id ? 'No. '.$cert->credential_id : null])->filter()->implode(' · ') }}</span>@endif
+                        <span class="title">{{ $cert->name }}</span>@if ($cert->issuer) · {{ $cert->issuer }}@endif
+                        @if ($cert->issued_on || $cert->credential_id)<span class="soft"> &nbsp;{{ collect([$cert->issued_on?->format('M Y'), $cert->credential_id ? 'No. '.$cert->credential_id : null])->filter()->implode(' · ') }}</span>@endif
+                        @if ($cert->description) — {{ $cert->description }}@endif
                     </p>
                 @endforeach
             </td>

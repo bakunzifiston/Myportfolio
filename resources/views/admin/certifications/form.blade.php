@@ -9,6 +9,7 @@
         <x-admin.field name="issued_on" label="Issue date" type="date" :value="$certification->issued_on?->format('Y-m-d')" />
         <x-admin.field name="expires_on" label="Expiry date" type="date" :value="$certification->expires_on?->format('Y-m-d')" />
         <x-admin.field name="credential_url" label="Credential URL" type="url" :value="$certification->credential_url" class="sm:col-span-2" />
+        <x-admin.field name="description" label="Short description" type="textarea" rows="2" :value="$certification->description" help="One or two sentences shown under the certificate on the website (max 500 characters)." class="sm:col-span-2" />
         <x-admin.field name="sort_order" label="Display order" type="number" :value="$certification->sort_order" />
         <x-admin.field name="is_published" label="Visible on the website and CV" type="checkbox" :value="$certification->is_published" class="sm:pt-7" />
         <div class="flex justify-end gap-3 sm:col-span-2"><a href="{{ route('admin.certifications.index') }}" class="btn-ghost">Cancel</a><button class="btn-primary">Save</button></div>

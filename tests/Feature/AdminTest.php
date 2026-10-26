@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Certification;
 use App\Models\Education;
 use App\Models\Project;
 use App\Models\SkillCategory;
@@ -106,6 +107,18 @@ class AdminTest extends TestCase
 
         $this->actingAs($admin)->post('/admin/education', $data + ['confirm_awarded' => '1', 'is_published' => '1'])->assertSessionHasNoErrors();
         $this->assertTrue(Education::sole()->isAwarded());
+    }
+
+    public function test_admin_can_save_a_certification_description(): void
+    {
+        $this->actingAs($this->admin())->post('/admin/certifications', [
+            'name' => 'Sample Certificate',
+            'description' => 'A short summary of the course.',
+            'is_published' => '1',
+        ])->assertRedirect(route('admin.certifications.index'));
+
+        $this->assertSame('A short summary of the course.', Certification::where('name', 'Sample Certificate')->value('description'));
+        $this->get('/')->assertSee('A short summary of the course.');
     }
 
     public function test_experience_needs_a_position_before_publishing(): void

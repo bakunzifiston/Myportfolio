@@ -28,6 +28,7 @@ class CertificationRequest extends FormRequest
             'expires_on' => ['nullable', 'date', 'after_or_equal:issued_on'],
             'credential_id' => ['nullable', 'string', 'max:120'],
             'credential_url' => ['nullable', 'url:http,https', 'max:255'],
+            'description' => ['nullable', 'string', 'max:500'],
             'is_published' => ['boolean'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:65000'],
         ];

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-#[Fillable(['name', 'issuer', 'issued_on', 'expires_on', 'credential_id', 'credential_url', 'is_published', 'sort_order'])]
+#[Fillable(['name', 'issuer', 'issued_on', 'expires_on', 'credential_id', 'credential_url', 'description', 'is_published', 'sort_order'])]
 class Certification extends Model
 {
     protected function casts(): array

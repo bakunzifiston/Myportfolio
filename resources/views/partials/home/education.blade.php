@@ -47,7 +47,9 @@
                     @foreach ($certifications as $cert)
                         <li class="reveal card p-5">
                             <p class="font-medium text-zinc-950 dark:text-white">{{ $cert->name }}</p>
-                            <p class="mt-1 text-sm text-zinc-600 dark:text-zinc-400">{{ collect([$cert->issuer, $cert->issued_on?->format('M Y')])->filter()->implode(' · ') }}</p>
+                            @if ($cert->description)
+                                <p class="mt-1.5 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{{ $cert->description }}</p>
+                            @endif
                             @if ($cert->credential_id)
                                 <p class="mt-1 font-mono text-xs text-zinc-500 dark:text-zinc-500">Certificate no. {{ $cert->credential_id }}</p>
                             @endif

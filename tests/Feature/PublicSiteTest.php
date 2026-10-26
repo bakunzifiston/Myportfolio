@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\Certification;
 use App\Models\Education;
 use App\Models\Experience;
 use App\Models\Project;
 use App\Models\SiteSetting;
+use Database\Seeders\CertificationSeeder;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -174,12 +176,33 @@ class PublicSiteTest extends TestCase
     {
         foreach (['/', '/resume'] as $url) {
             $this->get($url)
+                ->assertSee('Logic Models')
                 ->assertSee('Monitoring, Evaluation, and Learning for Development Professionals (MEAL DPro)')
                 ->assertSee('What is Project Management?')
                 ->assertSee('Teaching English as a Foreign Language (TEFL), 120 Hours, with Distinction')
-                ->assertSee('TR2397942172')
-                ->assertSee('Humentum');
+                ->assertSee('TR2397942172');
         }
+
+        // The home page shows each certificate's name and short description, without the issuer; the CV keeps issuer and date.
+        $this->get('/')
+            ->assertDontSee('Humentum')
+            ->assertSee('Online course on building logic models that connect project activities to outputs, outcomes and long-term impact.')
+            ->assertSee('completed with Distinction.');
+        $this->get('/resume')
+            ->assertSee('Humentum')
+            ->assertSee('Online course on building logic models that connect project activities to outputs, outcomes and long-term impact.');
+    }
+
+    public function test_certification_seeder_fills_missing_descriptions_without_overwriting_edits(): void
+    {
+        Certification::where('name', 'Logic Models')->update(['description' => null]);
+        Certification::where('name', 'What is Project Management?')->update(['description' => 'Edited by the owner']);
+
+        $this->seed(CertificationSeeder::class);
+
+        $this->assertStringStartsWith('Online course on building logic models', Certification::where('name', 'Logic Models')->value('description'));
+        $this->assertSame('Edited by the owner', Certification::where('name', 'What is Project Management?')->value('description'));
+        $this->assertSame(4, Certification::count());
     }
 
     public function test_resume_downloads_as_generated_pdf(): void
