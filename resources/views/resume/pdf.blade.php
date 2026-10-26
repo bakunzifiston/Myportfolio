@@ -150,8 +150,7 @@
             <td>
                 @foreach ($certifications as $cert)
                     <p @class(['item' => ! $loop->last, 'last' => $loop->last])>
-                        <span class="title">{{ $cert->name }}</span>@if ($cert->issuer) · {{ $cert->issuer }}@endif
-                        @if ($cert->issued_on || $cert->credential_id)<span class="soft"> &nbsp;{{ collect([$cert->issued_on?->format('M Y'), $cert->credential_id ? 'No. '.$cert->credential_id : null])->filter()->implode(' · ') }}</span>@endif
+                        <span class="title">{{ $cert->name }}</span>@if ($cert->credential_id)<span class="soft"> &nbsp;No. {{ $cert->credential_id }}</span>@endif
                         @if ($cert->description) — {{ $cert->description }}@endif
                     </p>
                 @endforeach

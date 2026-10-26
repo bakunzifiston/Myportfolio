@@ -183,14 +183,13 @@ class PublicSiteTest extends TestCase
                 ->assertSee('TR2397942172');
         }
 
-        // The home page shows each certificate's name and short description, without the issuer; the CV keeps issuer and date.
-        $this->get('/')
-            ->assertDontSee('Humentum')
-            ->assertSee('Online course on building logic models that connect project activities to outputs, outcomes and long-term impact.')
-            ->assertSee('completed with Distinction.');
-        $this->get('/resume')
-            ->assertSee('Humentum')
-            ->assertSee('Online course on building logic models that connect project activities to outputs, outcomes and long-term impact.');
+        // Certificates are shown by name and short description only, without issuer or date.
+        foreach (['/', '/resume'] as $url) {
+            $this->get($url)
+                ->assertDontSee('Humentum')
+                ->assertSee('Online course on building logic models that connect project activities to outputs, outcomes and long-term impact.')
+                ->assertSee('completed with Distinction.');
+        }
     }
 
     public function test_certification_seeder_fills_missing_descriptions_without_overwriting_edits(): void
